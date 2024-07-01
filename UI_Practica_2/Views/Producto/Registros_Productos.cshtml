@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Entidades.Producto>
+
+@{
+    ViewData["Title"] = "Registros_Productos";
+}
+
+<h1>Registros_Productos</h1>
+
+<p>
+    <a asp-action="Registrar_Producto" class="btn btn-dark"> Registrar Producto</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Precio)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Precio)
+            </td>
+                <td>
+                    <div class="d-flex flex-wrap">
+                        <div class="btn-group">
+                            <a asp-action="Editar_Producto" asp-route-id="@item.IdProdructo" class="btn btn-primary rounded">Editar</a>
+                            <a asp-action="Detalle_Producto" asp-route-id="@item.IdProdructo" class="btn btn-secondary rounded">Detalles</a>
+                            <a asp-action="Eliminar_Producto" asp-route-id="@item.IdProdructo" class="btn btn-danger rounded">Eliminar</a>
+                        </div>
+                        <style>
+                            .btn-group {
+                                display: flex;
+                                gap: 5px;
+                            }
+
+                            .btn {
+                                flex: 1;
+                                border-radius: 5px;
+                            }
+                        </style>
+                    </div>
+                </td>
+        </tr>
+}
+    </tbody>
+</table>

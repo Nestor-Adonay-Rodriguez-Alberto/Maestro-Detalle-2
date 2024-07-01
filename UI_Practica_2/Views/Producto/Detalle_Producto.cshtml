@@ -1,0 +1,30 @@
+﻿@model Entidades.Producto
+
+@{
+    ViewData["Title"] = "Detalle_Producto";
+}
+
+<h1>Detalle_Producto</h1>
+
+<div>
+    <h4>Producto</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Precio)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Precio)
+        </dd>
+    </dl>
+</div> 
+<div>
+    <a asp-action="Editar_Producto" asp-route-id="@Model.IdProdructo" class="btn btn-primary">EDITAR</a> |
+    <a asp-action="Registros_Productos" class="btn btn-secondary">CANCELAR</a>
+</div>
