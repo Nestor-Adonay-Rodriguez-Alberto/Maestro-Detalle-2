@@ -1,0 +1,144 @@
+﻿﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+}
+@model IEnumerable<Entidades.Detalle_Factura>
+@using Entidades;
+
+<input type="hidden" name="accion" value="@ViewBag.Accion" />
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-secondary">
+        <thead>
+            <tr>
+
+                <th style="width:250px;">
+                    @Html.DisplayName("Productos")
+                </th>
+                <th>
+                    @Html.DisplayName("Cantidad")
+                </th>
+
+                <th>
+                    @Html.DisplayName("Precio")
+                </th>
+                <th>
+                    @if (ViewBag.Accion == "Registrar_Factura" || ViewBag.Accion == "Editar_Factura")
+                    {
+                        <button type="button" onclick="Agregar_Detalle()" class="btn btn-primary">Agregar</button>
+                    }
+
+                </th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @{
+                int index = -1;
+            }
+            @if (Model != null && Model.Count() > 0)
+            {
+                List<Producto> Productos = (List<Producto>) ViewData["Lista_Productos"];
+                Productos.Add(new Producto { Nombre = "SELECCIONAR", IdProdructo = 0, Precio = 0 });
+                Productos = Productos.OrderBy(s => s.IdProdructo).ToList();
+
+                @foreach (var item in Model)
+                {
+                    index++;
+
+                    // var hidde = "table";
+                    if (item.IdDetalleFactura > -1)
+                    {
+                        SelectList Lista_Productos = new SelectList(Productos, "IdProdructo", "Nombre", item.IdProductoEnDetalle);
+                        string idPrecio = "txtPrecio" + index;
+                        string idProducto = "slProducto" + index;
+
+                        <tr>
+
+                            <td>
+                                <input type="hidden" name="Lista_DetalleFactura[@index].IdDetalleFactura" value="@item.IdDetalleFactura">
+                                <input type="hidden" name="Lista_DetalleFactura[@index].IdFacturaEnDetalle" value="@item.IdFacturaEnDetalle">
+
+                                <select style="width:250px;" class="form-control" data-readonly id="@idProducto" onchange="Combo_Productos('@idProducto','@idPrecio')" name="Lista_DetalleFactura[@index].IdProductoEnDetalle" asp-items="Lista_Productos"></select>
+
+                                @if (TempData["ProductoRequerido"] != null)
+                                {
+                                    <div class="alert alert-danger">@TempData["ProductoRequerido"]</div>
+                                }
+
+                            </td>
+                            <td>
+                                <input style="width:250px;" class="form-control" type="number" data-readonly name="Lista_DetalleFactura[@index].Cantidad" value="@item.Cantidad">
+                                @if (TempData["CantidadRequerida"] != null)
+                                {
+                                    <div class="alert alert-danger">@TempData["CantidadRequerida"]</div>
+                                }
+                            </td>
+
+                            <td>
+                                <input style="width:250px;" class="form-control" id="@idPrecio" readonly type="number" name="Lista_DetalleFactura[@index].PrecioDel_Producto" value="@item.PrecioDel_Producto">
+                            </td>
+                            <td>
+                                @if (ViewBag.Accion == "Registrar_Factura" || ViewBag.Accion == "Editar_Factura")
+                                    {
+                                    <button onclick="Eliminar_Detalle('@index')" class="btn btn-secondary" type="button">Eliminar</button>
+                                    }
+
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        SelectList Lista_Productos = new SelectList(Productos, "IdProdructo", "Nombre", item.IdProductoEnDetalle);
+                        string idPrecio = "txtPrecio" + index;
+                        string idProducto = "slProducto" + index;
+
+                        <tr style="display:none">
+                            <td>
+
+                                <input type="hidden" name="Lista_DetalleFactura[@index].IdDetalleFactura" value="@item.IdDetalleFactura">
+
+                                <input type="hidden" name="Lista_DetalleFactura[@index].IdFacturaEnDetalle" value="@item.IdFacturaEnDetalle">
+
+                                <select class="form-control" data-readonly id="@idProducto" onchange="Combo_Productos('@idProducto','@idPrecio')" name="Lista_DetalleFactura[@index].IdProductoEnDetalle" asp-items="Lista_Productos"></select>
+                                <input type="hidden" name="Lista_DetalleFactura[@index].Cantidad" value="@item.Cantidad">
+                                <input type="hidden" name="Lista_DetalleFactura[@index].PrecioDel_Producto" value="@item.PrecioDel_Producto">
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+
+        </tbody>
+    </table>
+</div>
+
+@if (ViewBag.Accion == "Detalle_Factura" || ViewBag.Accion == "Eliminar_Factura")
+{
+
+    <script>
+        const readOnly = document.querySelectorAll("*[data-readonly]");
+        for (var i = 0; i < readOnly.length; i++) {
+            const item = readOnly[i];
+            item.setAttribute("readonly", true);
+        }
+
+    </script>
+}
+else
+{
+    foreach (var item in ViewData["Lista_Productos"] as List<Producto>)
+    {
+        <span data-Lista_Productos="@item.IdProdructo" data-precio="@item.Precio"></span>
+    }
+    <script>
+        function Combo_Productos(idproducto, idprecio) {
+            var Lista_Productos = document.querySelector("#" + idproducto);
+            var txtPrecio = document.querySelector("#" + idprecio);
+            var spanData = document.querySelector("*[data-Lista_Productos='" + Lista_Productos.value + "']");
+            txtPrecio.value = spanData.getAttribute("data-precio");
+        }
+    </script>
+
+}

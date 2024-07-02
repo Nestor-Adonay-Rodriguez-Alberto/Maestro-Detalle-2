@@ -190,7 +190,7 @@ namespace UI_Practica_2.Controllers
             ViewData["Lista_Productos"] = await _FacturaBL.Lista_Productos();
 
             ViewBag.Accion = accion;
-            return PartialView("_Detalle_Compra", factura.Lista_DetalleFactura);
+            return PartialView("_Detalle_Factura", factura.Lista_DetalleFactura);
         }
 
         [HttpPost]
@@ -210,7 +210,7 @@ namespace UI_Practica_2.Controllers
             ViewData["Lista_Productos"] = await _FacturaBL.Lista_Productos();
 
             ViewBag.Accion = accion;
-            return PartialView("_Detalle_Compra", factura.Lista_DetalleFactura);
+            return PartialView("_Detalle_Factura", factura.Lista_DetalleFactura);
         }
 
 

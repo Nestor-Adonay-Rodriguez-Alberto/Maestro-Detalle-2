@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Entidades.Factura>
+
+@{
+    ViewData["Title"] = "Registros_Facturas";
+}
+
+<h1>Registros De Factura</h1><br />
+
+<p>
+    <a asp-action="Registrar_Factura" class="btn btn-dark">Crear Factura</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("FECHA REALIZADA")
+            </th>
+            <th>
+                @Html.DisplayName("CORRELATIVO")
+            </th>
+            <th>
+                @Html.DisplayName("CLIENTE")
+            </th>
+            <th>
+                @Html.DisplayName("TOTAL")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaRealizada)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Correlativo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreCliente)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+                <td>
+                    <div class="d-flex flex-wrap">
+                        <div class="btn-group">
+                            <a asp-action="Editar_Factura" asp-route-id="@item.IdFactura" class="btn btn-primary rounded">Editar</a>
+                            <a asp-action="Detalle_Factura" asp-route-id="@item.IdFactura" class="btn btn-secondary rounded">Detalles</a>
+                            <a asp-action="Eliminar_Factura" asp-route-id="@item.IdFactura" class="btn btn-danger rounded">Eliminar</a>
+                        </div>
+                        <style>
+                            .btn-group {
+                                display: flex;
+                                gap: 5px;
+                            }
+
+                            .btn {
+                                flex: 1;
+                                border-radius: 5px;
+                            }
+                        </style>
+                    </div>
+                </td>
+        </tr>
+}
+    </tbody>
+</table>

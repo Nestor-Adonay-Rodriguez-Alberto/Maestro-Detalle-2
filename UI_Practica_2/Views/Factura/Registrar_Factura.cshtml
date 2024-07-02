@@ -1,0 +1,75 @@
+﻿@model Entidades.Factura
+
+@{
+    ViewData["Title"] = "Registrar_Factura";
+}
+
+<h1>Registrar_Factura</h1>
+
+<h4>Factura</h4>
+<hr />
+<form asp-action="Registrar_Factura" id="Cadena_Consulta">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" name="index" id="txtIndexDetalle" />
+
+    <!-- FILA #1 -->
+    <div class="row">
+
+        <div class="form-group col-md-6">
+            <label asp-for="FechaRealizada" class="control-label"></label>
+            <input asp-for="FechaRealizada" class="form-control" />
+            <span asp-validation-for="FechaRealizada" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-md-4">
+            <label asp-for="Correlativo" class="control-label"></label>
+            <input readonly asp-for="Correlativo" class="form-control" />
+            <span asp-validation-for="Correlativo" class="text-danger"></span>
+        </div>
+
+    </div>
+
+    <!-- FILA #2 -->
+    <div class="row">
+
+        <div class="form-group col-md-6">
+            <label asp-for="NombreCliente" class="control-label"></label>
+            <input asp-for="NombreCliente" class="form-control" />
+            <span asp-validation-for="NombreCliente" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-md-4">
+            <label asp-for="Total" class="control-label"></label>
+            <input readonly asp-for="Total" class="form-control" />
+            <span asp-validation-for="Total" class="text-danger"></span>
+        </div>
+
+    </div>
+
+    <!-- VISTA PARCIAL -->
+    <div class="col-md-12" style="margin-top:10px;" id="Respuesta_Servidor">
+        @await Html.PartialAsync("_Detalle_Factura", Model.Lista_DetalleFactura)
+    </div>
+
+    <!-- BOTONES -->
+    <div class="row">
+
+        <div class="form-group">
+            <input type="submit" value="GUARDAR" class="btn btn-primary" />
+            <a asp-action="Registros_Facturas" class="btn btn-secondary">CANCELAR</a>
+        </div>
+
+    </div>
+
+</form>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_DetalleScript");
+    }
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
