@@ -14,7 +14,7 @@ namespace Acceso_Datos
 
             // Registrando Las Clases:
             services.AddScoped<ProductoDAL>();
-
+            services.AddScoped<FacturaDAL>();
 
             return services;
         }
